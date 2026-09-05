@@ -6,11 +6,6 @@ export type PointerOrigin = { x: number; y: number };
 
 const CENTRE: PointerOrigin = { x: 0, y: 0 };
 
-/**
- * Where the pointer sits relative to the middle of the viewport, as -1 to 1 on
- * both axes. The sunflower uses this to turn toward the cursor.
- * Reports dead centre when disabled, so reduced-motion visitors get a still flower.
- */
 export function usePointerOrigin(enabled: boolean): PointerOrigin {
   const [origin, setOrigin] = useState<PointerOrigin>(CENTRE);
 

@@ -12,7 +12,6 @@ import { NamesCarousel } from "@/components/names-carousel";
 import { PhotoLightbox } from "@/components/photo-lightbox";
 import { TurningSection } from "@/components/turning-section";
 import { WishCandles } from "@/components/wish-candles";
-import { useMounted } from "@/hooks/use-mounted";
 import { usePointerOrigin } from "@/hooks/use-pointer-origin";
 import { useRotatingIndex } from "@/hooks/use-rotating-index";
 import { useWish } from "@/hooks/use-wish";
@@ -22,6 +21,7 @@ import {
   GALLERY,
   GALLERY_SECTION,
   HERO,
+  HERO_PORTRAIT,
   LETTER,
   NAME_CYCLE_MS,
   NAMES,
@@ -33,7 +33,6 @@ import {
 export default function BirthdayPage() {
   const prefersReducedMotion = useReducedMotion();
   const animated = !prefersReducedMotion;
-  const mounted = useMounted();
 
   const tilt = usePointerOrigin(animated);
   const activeNameIndex = useRotatingIndex(
@@ -54,18 +53,18 @@ export default function BirthdayPage() {
       className="flex flex-col"
       style={{
         background:
-          "linear-gradient(to bottom, #fdfcf9 0%, #fff4cd 9%, #fff0bd 15%, #fdf7e2 26%, #fdfbf3 40%, #fdfcf9 54%, #fbfaf6 68%, #f6f9fb 82%, #e6f0f6 92%, #d5e6f0 100%)",
+          "linear-gradient(to bottom, #fdfcf9 0%, #fdfcf9 12%, #fdf9ee 20%, #fff3cf 30%, #fdf8e6 42%, #fdfcf9 56%, #fbfaf6 70%, #f6f9fb 84%, #e8f1f7 93%, #d8e8f1 100%)",
       }}
     >
       <HeroSun
         name={HERO.name}
         fullName={HERO.fullName}
+        portrait={HERO_PORTRAIT}
         openingLines={HERO.openingLines}
         dateLabel={HERO.dateLabel}
         ageLabel={HERO.ageLabel}
         tilt={tilt}
         animated={animated}
-        atmosphere={animated && mounted}
       />
 
       <TurningSection
@@ -99,6 +98,7 @@ export default function BirthdayPage() {
       />
 
       <Letter
+        date={LETTER.date}
         salutation={LETTER.salutation}
         paragraphs={LETTER.paragraphs}
         closing={LETTER.closing}

@@ -24,6 +24,7 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-sans);
   --font-display: var(--font-display);
+  --font-hand: var(--font-hand);
   --font-heading: var(--font-display);
   --color-ring: var(--ring);
   --color-input: var(--input);

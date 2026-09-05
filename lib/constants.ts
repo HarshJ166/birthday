@@ -7,8 +7,16 @@ export const HERO = {
   name: "Devyani",
   fullName: "Devyani Rawat",
   openingLines: ["You turn toward the sun.", "So I built you one."],
-  dateLabel: "13 September",
+  dateLabel: "13 September 2003",
   ageLabel: "Twenty-three",
+} as const;
+
+/** The one that opens the page: golden hour, and the highest resolution of the set. */
+export const HERO_PORTRAIT = {
+  src: "/photos/03.jpeg",
+  width: 1500,
+  height: 2000,
+  alt: "Devyani at the beach at sunset in a yellow shirt, hand in her hair.",
 } as const;
 
 export const TURNING = {
@@ -27,11 +35,11 @@ export const NAMES = {
   entries: [
     { name: "Devyani", who: "On paper, and by anyone being careful with her." },
     { name: "Dev", who: "Everyone, eventually. It takes about a week." },
-    { name: "Devi", who: "Usually said by someone who wants something." },
+    { name: "Devi", who: "Mine. It is what I have called her from the start." },
     { name: "Rawat", who: "The drill square, and anyone who met her in uniform first." },
     {
       name: "My therapist",
-      who: "Me. At hours no actual therapist would agree to.",
+      who: "Also mine. At hours no real therapist would agree to.",
     },
     {
       name: "Social butterfly",
@@ -73,8 +81,8 @@ export const GALLERY = [
   },
   {
     src: "/photos/03.jpeg",
-    width: 3000,
-    height: 4000,
+    width: 1500,
+    height: 2000,
     alt: "Devyani at the beach at sunset in a yellow shirt, hand in her hair.",
     caption: "Sunset, and still the brightest thing on that beach.",
   },
@@ -101,19 +109,20 @@ export const GALLERY = [
   },
   {
     src: "/photos/08.jpeg",
-    width: 1424,
-    height: 2199,
+    width: 1295,
+    height: 2000,
     alt: "Devyani smiling straight at the camera indoors, warm lights behind her.",
     caption: "No occasion. Just this.",
   },
 ] as const;
 
 export const GALLERY_SECTION = {
-  heading: "Evidence",
+  heading: "Look at her",
   intro: "Only the ones I could get my hands on.",
 } as const;
 
 export const LETTER = {
+  date: "13 September 2026",
   salutation: "Devyani,",
   paragraphs: [
     "I have called you my therapist for so long that I think you have stopped hearing it as a compliment. It is the largest one I have got.",
