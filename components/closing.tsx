@@ -1,8 +1,14 @@
 "use client";
 
+import { useSyncExternalStore } from "react";
 import { motion } from "motion/react";
 
-const EASE_OUT = [0.16, 1, 0.3, 1] as const;
+import { daysUntil } from "@/lib/countdown";
+import { EASE_OUT, reveal } from "@/lib/motion";
+
+/** The day does not turn over while she is looking at it. */
+const noSubscription = () => () => {};
+
 const CONTRAIL_DURATION = 2.6;
 
 /** Where the aircraft finishes, and roughly the angle it is climbing at. */
@@ -16,6 +22,9 @@ type ClosingProps = {
   nudge: string;
   date: string;
   signature: string;
+  onTheDay: string;
+  untilNext: string;
+  birthday: { month: number; day: number };
   animated: boolean;
 };
 
@@ -24,8 +33,19 @@ export function Closing({
   nudge,
   date,
   signature,
+  onTheDay,
+  untilNext,
+  birthday,
   animated,
 }: ClosingProps) {
+  /* The server does not know what day it is where she is, so it renders nothing
+     and the real count lands on hydration. */
+  const days = useSyncExternalStore(
+    noSubscription,
+    () => daysUntil(birthday.month, birthday.day, new Date()),
+    () => null,
+  );
+
   return (
     <footer className="relative overflow-hidden px-6 pt-28 pb-20 lg:pt-36">
       <svg
@@ -36,9 +56,21 @@ export function Closing({
         <defs>
           {/* The trail thins out behind the aircraft rather than stopping dead. */}
           <linearGradient id="contrail-fade" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor="white" stopOpacity="0" />
-            <stop offset="45%" stopColor="white" stopOpacity="0.55" />
-            <stop offset="100%" stopColor="white" stopOpacity="1" />
+            <stop
+              offset="0%"
+              stopColor="var(--color-sun-deep)"
+              stopOpacity="0"
+            />
+            <stop
+              offset="45%"
+              stopColor="var(--color-sun-deep)"
+              stopOpacity="0.45"
+            />
+            <stop
+              offset="100%"
+              stopColor="var(--color-sun-deep)"
+              stopOpacity="0.9"
+            />
           </linearGradient>
         </defs>
 
@@ -65,20 +97,47 @@ export function Closing({
             ease: EASE_OUT,
           }}
         >
-          <path d="M 4 0 L -17 6.5 L -11 0 L -17 -6.5 Z" fill="white" />
+          <path
+            d="M 4 0 L -17 6.5 L -11 0 L -17 -6.5 Z"
+            fill="var(--color-ember-ink)"
+          />
         </motion.g>
       </svg>
 
       <div className="relative mx-auto flex w-full max-w-3xl flex-col items-center text-center">
-        <p className="font-display text-[clamp(2rem,5.5vw,3.5rem)] leading-tight font-normal text-balance text-seed">
+        <motion.h2
+          className="font-display text-head font-normal text-balance text-seed [--opsz:48]"
+          {...reveal(animated)}
+        >
           {greeting}
-        </p>
-        <p className="font-display mt-4 text-xl font-normal text-seed-soft italic">
+        </motion.h2>
+        <motion.p
+          className="font-display mt-4 text-lead font-normal text-seed-soft italic [--opsz:20]"
+          {...reveal(animated, 0.1)}
+        >
           {nudge}
-        </p>
-        <p className="mt-10 text-sm text-seed-soft">{date}</p>
-        <p className="font-display mt-2 text-lg font-normal text-seed italic">
+        </motion.p>
+        <motion.p
+          className="mt-10 text-micro text-seed-soft"
+          {...reveal(animated, 0.2)}
+        >
+          {date}
+        </motion.p>
+        <motion.p
+          className="font-display mt-2 text-lead font-normal text-seed italic [--opsz:18]"
+          {...reveal(animated, 0.28)}
+        >
           {signature}
+        </motion.p>
+
+        {/* Reserved height, so the line arriving on mount never shifts the
+            signature above it. */}
+        <p className="mt-10 flex min-h-6 items-center text-micro text-seed-soft">
+          {days === null
+            ? null
+            : days === 0
+              ? onTheDay
+              : `${days} ${days === 1 ? "day" : "days"} ${untilNext}`}
         </p>
       </div>
     </footer>

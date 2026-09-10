@@ -1,7 +1,10 @@
-/**
- * Every word, image and number on this page lives here.
- * Components never reach for content — the page hands it to them.
- */
+
+export const ENVELOPE = {
+  eyebrow: "For you,",
+  name: "Devyani",
+  note: "Twenty-three years ago today, and the sun has not missed a morning since.",
+  action: "Open it",
+} as const;
 
 export const HERO = {
   name: "Devyani",
@@ -9,14 +12,42 @@ export const HERO = {
   openingLines: ["You turn toward the sun.", "So I built you one."],
   dateLabel: "13 September 2003",
   ageLabel: "Twenty-three",
+  /** The page's only instruction, and its only joke. One per input device —
+      the sun follows a cursor on a desktop and a tilted phone in the hand. */
+  note: {
+    pointer: "move your cursor — for once, the sun follows you.",
+    tilt: "tilt your phone — for once, the sun follows you.",
+  },
 } as const;
 
-/** The one that opens the page: golden hour, and the highest resolution of the set. */
-export const HERO_PORTRAIT = {
-  src: "/photos/03.jpeg",
-  width: 1500,
-  height: 2000,
-  alt: "Devyani at the beach at sunset in a yellow shirt, hand in her hair.",
+/**
+ * Two portraits, because no amount of filtering turns a sunset beach into
+ * midnight — and every filter that tries puts her face in the dark along with
+ * the sea. After dark the page shows a photograph actually taken after dark,
+ * where she is already lit and the background is already black.
+ *
+ * `object` is where the crop holds as the arch narrows; the pair are the phone
+ * and desktop framings, since the arch is a different shape on each.
+ */
+export const HERO_PORTRAITS = {
+  day: {
+    src: "/photos/03.jpeg",
+    width: 1500,
+    height: 2000,
+    alt: "Devyani at the beach at sunset in a yellow shirt, hand in her hair.",
+    object: "50% 30%",
+    objectLg: "50% 0%",
+  },
+  night: {
+    src: "/photos/02.jpeg",
+    width: 960,
+    height: 1280,
+    alt: "Devyani sitting on a low wall at night in pink reindeer antlers, smiling at the camera.",
+    /* Both arch crops are taller than 3:4, so the height binds and the crop is
+       horizontal only. Her face sits at 54% across; the frame is held there. */
+    object: "54% 30%",
+    objectLg: "54% 30%",
+  },
 } as const;
 
 export const TURNING = {
@@ -97,7 +128,7 @@ export const GALLERY = [
     src: "/photos/02.jpeg",
     width: 960,
     height: 1280,
-    alt: "Devyani sitting on a low wall in the sun, wearing a pink headband.",
+    alt: "Devyani sitting on a low wall at night, wearing pink reindeer antlers.",
     caption: "The headband was not a costume. She simply wanted it.",
   },
   {
@@ -119,6 +150,8 @@ export const GALLERY = [
 export const GALLERY_SECTION = {
   heading: "Look at her",
   intro: "Only the ones I could get my hands on.",
+  /* They come out of the envelope face down, the way prints actually do. */
+  hint: "Face down, as they came. Turn one over.",
 } as const;
 
 export const LETTER = {
@@ -134,6 +167,8 @@ export const LETTER = {
     "So — twenty-three. You have already sat the exam. Whatever the letter says, keep your eyes up. You have never once needed telling which way the light is.",
   farewell: "Happy birthday, Dev.",
   signature: "Harsh",
+  /* It arrives folded. Reading it has to be something she chooses to do. */
+  unfold: "Unfold it",
 } as const;
 
 export const WISH = {
@@ -164,10 +199,31 @@ export const CLOSING = {
   nudge: "Go on. Do the smile.",
   date: "13 September 2026",
   signature: "— Harsh",
+  /* The one line on the page that has moved every time she comes back. */
+  onTheDay: "And it is today. That is the entire point.",
+  untilNext: "until the next one.",
 } as const;
+
+/** The date the counter in the footer is counting to. */
+export const BIRTHDAY = { month: 9, day: 13 } as const;
 
 /** How long the breath takes to travel across all twenty-three candles. */
 export const WISH_BLOW_OUT_MS = 1_500;
 
 /** How long each of her names holds the stage. */
 export const NAME_CYCLE_MS = 2_600;
+
+/**
+ * The background music.
+ *
+ * The tune is a synthesised music box — it costs nothing to license and asks
+ * nobody's permission. To use a real song instead, drop the file in `public/`
+ * and change `src`. Nothing else has to move.
+ */
+export const MUSIC = {
+  src: "/music/happy-birthday.wav",
+  /** Quiet enough to read a letter over. */
+  volume: 0.22,
+  playLabel: "Play music",
+  pauseLabel: "Pause music",
+} as const;

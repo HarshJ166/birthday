@@ -5,7 +5,10 @@ import "./globals.css";
 const displaySerif = Fraunces({
   variable: "--font-display",
   subsets: ["latin"],
-  axes: ["SOFT", "WONK"],
+  /* opsz is the whole reason to use Fraunces. next/font ships only the axes
+     named here, so leaving it out served one text-size drawing for everything
+     from the 15px date to the 215px name. */
+  axes: ["opsz", "SOFT", "WONK"],
   display: "swap",
 });
 

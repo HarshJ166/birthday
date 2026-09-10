@@ -17,6 +17,67 @@
   --color-sky: #c7dcea;
   --color-stem: #6e7f58;
   --color-hairline: #ede6d8;
+
+  /* Golden hour is not one yellow. Amber is the sun with weight behind it,
+     ember is the last of it on the water, dusk is the violet band the sky
+     turns overhead — the cool note that stops the warm ones going syrupy.
+     Bark is the deep end of seed, reserved for type set very large. */
+  --color-amber: #ef9d10;
+  --color-ember: #e0632e;
+  /* Ember is a light — it glows, it does not read. This is the same fire with
+     the heat taken out of it, dark enough to set words in: 5.2:1 against the
+     lightest ground the hero can put behind it. */
+  --color-ember-ink: #ab4519;
+  --color-dusk: #9b8ab6;
+  --color-bark: #241708;
+
+  /* ---- Type ----------------------------------------------------------------
+     One scale, not nineteen separate decisions. Every step carries its own
+     leading and tracking, so a call site cannot set a size and forget the two
+     things that have to move with it. Roles, not numbers: nothing here is
+     named for how big it is, because that is what let eleven near-identical
+     body sizes accumulate in the first place. */
+
+  /* Display — Fraunces. Leading tightens as size grows, which is precisely why
+     display type needs its own steps rather than one multiplier. */
+  --text-hero: clamp(5.15rem, 20.4vw, 17rem);
+  --text-hero--line-height: 0.82;
+  --text-hero--letter-spacing: -0.035em;
+
+  --text-title: clamp(3.5rem, 15.3vw, 7rem);
+  --text-title--line-height: 0.9;
+  --text-title--letter-spacing: -0.03em;
+
+  --text-head-lg: clamp(2.6rem, 6vw, 4.25rem);
+  --text-head-lg--line-height: 1.08;
+  --text-head-lg--letter-spacing: -0.018em;
+
+  --text-head: clamp(2.25rem, 5.5vw, 3.75rem);
+  --text-head--line-height: 1;
+  --text-head--letter-spacing: -0.015em;
+
+  --text-name: clamp(1.75rem, 5vw, 3rem);
+  --text-name--line-height: 1.1;
+  --text-name--letter-spacing: -0.012em;
+
+  /* Text — Instrument Sans. */
+  --text-lead-lg: 1.4375rem;
+  --text-lead-lg--line-height: 1.5;
+  --text-lead: 1.25rem;
+  --text-lead--line-height: 1.55;
+  --text-body: 1.0625rem;
+  --text-body--line-height: 1.65;
+  --text-small: 0.9375rem;
+  --text-small--line-height: 1.5;
+  --text-micro: 0.875rem;
+  --text-micro--line-height: 1.5;
+
+  /* Hand — Caveat, whose x-height is small for its em. It has to run about a
+     fifth larger than the sans to read as the same size beside it. */
+  --text-hand-lg: 1.5rem;
+  --text-hand-lg--line-height: 1.35;
+  --text-hand: 1.3rem;
+  --text-hand--line-height: 1.35;
 }
 
 @theme inline {
@@ -89,9 +150,18 @@
   }
 
   /* Fraunces carries the display voice. SOFT rounds the terminals and WONK
-     swaps in the alternate curved forms — the closest type gets to a petal. */
+     swaps in the alternate curved forms — the closest type gets to a petal.
+     opsz is the optical size: a serif wants finer hairlines and tighter fit at
+     display sizes and sturdier strokes at text sizes, and serving one drawing
+     for both is what makes large serif type read as enlarged rather than set.
+     Each role sets its own --opsz; 14 is the text default for anything that
+     does not. */
   .font-display {
-    font-variation-settings: "SOFT" 60, "WONK" 1;
+    --opsz: 14;
+    font-variation-settings:
+      "opsz" var(--opsz),
+      "SOFT" 60,
+      "WONK" 1;
   }
 
   :focus-visible {

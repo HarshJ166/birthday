@@ -1,13 +1,15 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useReducedMotion } from "motion/react";
 
 import { BecauseOfYou } from "@/components/because-of-you";
 import { Closing } from "@/components/closing";
+import { Envelope } from "@/components/envelope";
 import { GalleryGrid } from "@/components/gallery-grid";
 import { HeroSun } from "@/components/hero-sun";
 import { Letter } from "@/components/letter";
+import { Music } from "@/components/music";
 import { NamesCarousel } from "@/components/names-carousel";
 import { PhotoLightbox } from "@/components/photo-lightbox";
 import { TurningSection } from "@/components/turning-section";
@@ -17,12 +19,15 @@ import { useRotatingIndex } from "@/hooks/use-rotating-index";
 import { useWish } from "@/hooks/use-wish";
 import {
   BECAUSE_OF_YOU,
+  BIRTHDAY,
   CLOSING,
+  ENVELOPE,
   GALLERY,
   GALLERY_SECTION,
   HERO,
-  HERO_PORTRAIT,
+  HERO_PORTRAITS,
   LETTER,
+  MUSIC,
   NAME_CYCLE_MS,
   NAMES,
   TURNING,
@@ -33,6 +38,17 @@ import {
 export default function BirthdayPage() {
   const prefersReducedMotion = useReducedMotion();
   const animated = !prefersReducedMotion;
+
+  const [sealed, setSealed] = useState(true);
+  const open = useCallback(() => setSealed(false), []);
+
+  /* Nothing behind the envelope is reachable until it is open. */
+  useEffect(() => {
+    document.body.style.overflow = sealed ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [sealed]);
 
   const tilt = usePointerOrigin(animated);
   const activeNameIndex = useRotatingIndex(
@@ -49,86 +65,124 @@ export default function BirthdayPage() {
   const closeLightbox = useCallback(() => setOpenPhotoIndex(null), []);
 
   return (
-    <main
-      className="flex flex-col"
-      style={{
-        background:
-          "linear-gradient(to bottom, #fdfcf9 0%, #fdfcf9 12%, #fdf9ee 20%, #fff3cf 30%, #fdf8e6 42%, #fdfcf9 56%, #fbfaf6 70%, #f6f9fb 84%, #e8f1f7 93%, #d8e8f1 100%)",
-      }}
-    >
-      <HeroSun
-        name={HERO.name}
-        fullName={HERO.fullName}
-        portrait={HERO_PORTRAIT}
-        openingLines={HERO.openingLines}
-        dateLabel={HERO.dateLabel}
-        ageLabel={HERO.ageLabel}
-        tilt={tilt}
+    <>
+      <Envelope
+        eyebrow={ENVELOPE.eyebrow}
+        name={ENVELOPE.name}
+        note={ENVELOPE.note}
+        actionLabel={ENVELOPE.action}
+        sealed={sealed}
+        onOpen={open}
         animated={animated}
       />
 
-      <TurningSection
-        heading={TURNING.heading}
-        paragraphs={TURNING.paragraphs}
-        aside={TURNING.aside}
-        tilt={tilt}
+      <Music
+        src={MUSIC.src}
+        volume={MUSIC.volume}
+        playLabel={MUSIC.playLabel}
+        pauseLabel={MUSIC.pauseLabel}
+        unlocked={!sealed}
       />
 
-      <NamesCarousel
-        heading={NAMES.heading}
-        intro={NAMES.intro}
-        entries={NAMES.entries}
-        activeIndex={activeNameIndex}
-        animated={animated}
-      />
+      {/* The page is mounted from the start so the photographs are already in
+          hand when the envelope parts — but keying it to the seal restarts
+          every entrance, so her arrival is watched rather than missed. */}
+      <main
+        key={sealed ? "sealed" : "open"}
+        className="flex flex-col"
+        style={{
+          background:
+            /* One warm progression from top to bottom. The old tail cooled off
+             into sky blue under the last two sections, which put an ice-cold
+             ground directly beneath a room lit by candles — the single worst
+             adjacency on the page. It now warms instead of cooling, and holds
+             one constant cream from 84% down so the candles and the closing
+             stand on the same colour. That constant is what lets the dark room
+             begin and end on the exact tone of the page it interrupts. */
+            "linear-gradient(to bottom, #fdfcf9 0%, #fdfcf9 8%, #fdf9ee 13%, #fff3cf 20%, #fdf8e6 27%, #fdfcf9 33%, #fdfcf9 46%, #fcf9f1 62%, #f9f4e7 74%, #f6efe1 84%, #f6efe1 100%)",
+        }}
+      >
+        <HeroSun
+          name={HERO.name}
+          fullName={HERO.fullName}
+          portraits={HERO_PORTRAITS}
+          openingLines={HERO.openingLines}
+          dateLabel={HERO.dateLabel}
+          ageLabel={HERO.ageLabel}
+          note={HERO.note}
+          tilt={tilt}
+          animated={animated}
+        />
 
-      <BecauseOfYou
-        eyebrow={BECAUSE_OF_YOU.eyebrow}
-        heading={BECAUSE_OF_YOU.heading}
-        paragraphs={BECAUSE_OF_YOU.paragraphs}
-        animated={animated}
-      />
+        <TurningSection
+          heading={TURNING.heading}
+          paragraphs={TURNING.paragraphs}
+          aside={TURNING.aside}
+          tilt={tilt}
+          animated={animated}
+        />
 
-      <GalleryGrid
-        heading={GALLERY_SECTION.heading}
-        intro={GALLERY_SECTION.intro}
-        photos={GALLERY}
-        onSelectPhoto={setOpenPhotoIndex}
-        animated={animated}
-      />
+        <NamesCarousel
+          heading={NAMES.heading}
+          intro={NAMES.intro}
+          entries={NAMES.entries}
+          activeIndex={activeNameIndex}
+          animated={animated}
+        />
 
-      <Letter
-        date={LETTER.date}
-        salutation={LETTER.salutation}
-        paragraphs={LETTER.paragraphs}
-        closing={LETTER.closing}
-        farewell={LETTER.farewell}
-        signature={LETTER.signature}
-        animated={animated}
-      />
+        <BecauseOfYou
+          eyebrow={BECAUSE_OF_YOU.eyebrow}
+          heading={BECAUSE_OF_YOU.heading}
+          paragraphs={BECAUSE_OF_YOU.paragraphs}
+          animated={animated}
+        />
 
-      <WishCandles
-        heading={WISH.heading}
-        note={wishCopy.note}
-        actionLabel={wishCopy.action}
-        granted={WISH.granted}
-        stage={stage}
-        onAdvance={advanceWish}
-        animated={animated}
-      />
+        <GalleryGrid
+          heading={GALLERY_SECTION.heading}
+          intro={GALLERY_SECTION.intro}
+          hint={GALLERY_SECTION.hint}
+          photos={GALLERY}
+          onSelectPhoto={setOpenPhotoIndex}
+          animated={animated}
+        />
 
-      <Closing
-        greeting={CLOSING.greeting}
-        nudge={CLOSING.nudge}
-        date={CLOSING.date}
-        signature={CLOSING.signature}
-        animated={animated}
-      />
+        <Letter
+          date={LETTER.date}
+          salutation={LETTER.salutation}
+          paragraphs={LETTER.paragraphs}
+          closing={LETTER.closing}
+          farewell={LETTER.farewell}
+          signature={LETTER.signature}
+          unfoldLabel={LETTER.unfold}
+          animated={animated}
+        />
 
-      <PhotoLightbox
-        photo={openPhotoIndex === null ? null : GALLERY[openPhotoIndex]}
-        onClose={closeLightbox}
-      />
-    </main>
+        <WishCandles
+          heading={WISH.heading}
+          note={wishCopy.note}
+          actionLabel={wishCopy.action}
+          granted={WISH.granted}
+          stage={stage}
+          onAdvance={advanceWish}
+          animated={animated}
+        />
+
+        <Closing
+          greeting={CLOSING.greeting}
+          nudge={CLOSING.nudge}
+          date={CLOSING.date}
+          signature={CLOSING.signature}
+          onTheDay={CLOSING.onTheDay}
+          untilNext={CLOSING.untilNext}
+          birthday={BIRTHDAY}
+          animated={animated}
+        />
+
+        <PhotoLightbox
+          photo={openPhotoIndex === null ? null : GALLERY[openPhotoIndex]}
+          onClose={closeLightbox}
+        />
+      </main>
+    </>
   );
 }

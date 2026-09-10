@@ -25,7 +25,9 @@ export function PhotoLightbox({ photo, onClose }: PhotoLightboxProps) {
         {photo ? (
           <>
             <DialogTitle className="sr-only">{photo.caption}</DialogTitle>
-            <DialogDescription className="sr-only">{photo.alt}</DialogDescription>
+            <DialogDescription className="sr-only">
+              {photo.alt}
+            </DialogDescription>
             <Image
               src={photo.src}
               width={photo.width}
@@ -35,7 +37,7 @@ export function PhotoLightbox({ photo, onClose }: PhotoLightboxProps) {
               className="h-auto max-h-[76vh] w-full object-contain"
               priority
             />
-            <p className="px-1 pt-3 pb-1 text-[0.9375rem] text-seed-soft">
+            <p className="px-1 pt-3 pb-1 text-small text-seed-soft">
               {photo.caption}
             </p>
           </>

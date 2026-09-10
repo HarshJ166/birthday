@@ -18,8 +18,68 @@ import {
   scatterNoise,
   SEEDS,
 } from "@/lib/sunflower-geometry";
+import { EASE_OUT, reveal } from "@/lib/motion";
+import { GRAIN } from "@/lib/texture";
 
-const EASE_OUT = [0.16, 1, 0.3, 1] as const;
+/**
+ * The dark is not a decision about this section — it is what happens when she
+ * lights the candles.
+ *
+ * A permanent dark band was the wrong answer twice over: a near-black rectangle
+ * sitting in a warm paper page before anything has happened is a hole rather
+ * than a room, and fading black out to nothing over paper drags the edges
+ * through a dead desaturated zone that always reads as dirt. So the section
+ * starts on paper like every other one, and the lights go down when she asks
+ * for them.
+ *
+ * Radial rather than flat, because the candles are the light source and a lit
+ * room is warm at the middle and darkest in the corners — a single fill reads
+ * as a background colour, which is exactly what it would be.
+ */
+/**
+ * The room is opaque and begins and ends on `#f6efe1` — the exact tone the page
+ * holds from 84% down.
+ *
+ * The first attempt faded a near-black to transparent instead, and that is what
+ * produced the grey smear: black composited over a light ground through alpha
+ * is neutral grey at every step, with no hue anywhere in the middle. Ramping
+ * through actual colour — cream, sand, tan, umber, then dark — means the
+ * transition passes through warmth rather than through dirt, and because both
+ * ends match the page exactly there is no seam left to blend.
+ */
+const ROOM = [
+  "radial-gradient(ellipse 88% 56% at 50% 47%, rgba(140,88,34,0.5) 0%, rgba(70,42,16,0.22) 46%, rgba(0,0,0,0) 76%)",
+  [
+    "linear-gradient(to bottom",
+    "#f6efe1 0%",
+    "#e8d0aa 3%",
+    "#b58449 7%",
+    "#5f3c1c 12%",
+    "#2b1a0b 18%",
+    "#170e07 34%",
+    "#170e07 66%",
+    "#2b1a0b 82%",
+    "#5f3c1c 88%",
+    "#b58449 93%",
+    "#e8d0aa 97%",
+    "#f6efe1 100%)",
+  ].join(", "),
+].join(",");
+
+/** The grain belongs to the dark only, so it stops before the warm ends. */
+const ROOM_EDGES =
+  "linear-gradient(to bottom, transparent 0%, #000 20%, #000 80%, transparent 100%)";
+
+/** Long enough that the lights going down is felt rather than switched. */
+const DIM_SECONDS = 1.4;
+const DIM = `opacity ${DIM_SECONDS}s ease`;
+
+const PAPER_INK = "#3b2a17";
+const PAPER_INK_SOFT = "#6b5a45";
+const ROOM_INK = "#fdfcf9";
+const ROOM_INK_SOFT = "rgba(253, 252, 249, 0.66)";
+/** The type changes with the light, not a beat before or after it. */
+const INK_FADE = `color ${DIM_SECONDS}s ease`;
 
 const FLAME_ORIGIN_LIFT = 3;
 const LIGHT_SWEEP_SECONDS = 0.9;
@@ -60,10 +120,45 @@ export function WishCandles({
   const flamesOut = stage === "blowing" || stage === "granted";
   const bloomed = stage === "granted";
 
+  /* The room stays down once she has struck the first match, so the flower
+     blooms in the dark and only "Light them again" brings the paper back. */
+  const darkened = stage !== "unlit";
+  const ink = darkened ? ROOM_INK : PAPER_INK;
+  const inkSoft = darkened ? ROOM_INK_SOFT : PAPER_INK_SOFT;
+
   return (
-    <section className="relative overflow-hidden px-6 py-24 lg:py-32">
-      <div className="mx-auto flex w-full max-w-2xl flex-col items-center text-center">
-        <h2 className="font-display text-[clamp(2.25rem,5.5vw,3.5rem)] leading-tight font-normal text-seed">
+    <section className="relative overflow-hidden px-6 py-36 lg:py-44">
+      {/* The room, and the grain that stops it banding into steps. Both are
+          masked to the same soft edges so the dark never meets paper at a line. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background: ROOM,
+          opacity: darkened ? 1 : 0,
+          transition: DIM,
+        }}
+      />
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 mix-blend-soft-light"
+        style={{
+          backgroundImage: GRAIN,
+          maskImage: ROOM_EDGES,
+          WebkitMaskImage: ROOM_EDGES,
+          opacity: darkened ? 0.16 : 0,
+          transition: DIM,
+        }}
+      />
+
+      <motion.div
+        className="relative mx-auto flex w-full max-w-2xl flex-col items-center text-center"
+        {...reveal(animated)}
+      >
+        <h2
+          className="font-display text-head font-normal [--opsz:48]"
+          style={{ color: ink, transition: INK_FADE }}
+        >
           {heading}
         </h2>
 
@@ -98,8 +193,8 @@ export function WishCandles({
                 <stop offset="100%" stopColor="#e4cfae" />
               </linearGradient>
               <radialGradient id="candle-plate" cx="38%" cy="30%" r="82%">
-                <stop offset="0%" stopColor="#6b4a26" />
-                <stop offset="100%" stopColor="#2c1d0f" />
+                <stop offset="0%" stopColor="#8a6136" />
+                <stop offset="100%" stopColor="#402a16" />
               </radialGradient>
               <radialGradient id="candle-petal" cx="50%" cy="88%" r="72%">
                 <stop offset="0%" stopColor="var(--color-sun-deep)" />
@@ -165,7 +260,7 @@ export function WishCandles({
               ry={SEED_PLATE_RADIUS_Y}
               fill="url(#candle-plate)"
             />
-            <g fill="var(--color-petal)" opacity={0.26}>
+            <g fill="var(--color-petal)" opacity={0.34}>
               {SEEDS.map((seed, index) => (
                 <circle
                   key={index}
@@ -319,7 +414,8 @@ export function WishCandles({
                 {granted.map((line) => (
                   <p
                     key={line}
-                    className="font-display mx-auto max-w-[36ch] text-xl leading-snug font-normal text-balance text-seed"
+                    className="font-display mx-auto max-w-[36ch] text-lead font-normal text-balance [--opsz:20]"
+                    style={{ color: ink, transition: INK_FADE }}
                   >
                     {line}
                   </p>
@@ -332,7 +428,8 @@ export function WishCandles({
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.4, ease: EASE_OUT }}
-                className="max-w-[44ch] text-[1.0625rem] leading-relaxed text-balance text-seed-soft"
+                className="max-w-[46ch] text-body text-balance"
+                style={{ color: inkSoft, transition: INK_FADE }}
               >
                 {note}
               </motion.p>
@@ -348,7 +445,7 @@ export function WishCandles({
         >
           {actionLabel}
         </Button>
-      </div>
+      </motion.div>
     </section>
   );
 }

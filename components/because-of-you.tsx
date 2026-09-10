@@ -3,7 +3,8 @@
 import { Fragment } from "react";
 import { motion } from "motion/react";
 
-const EASE_OUT = [0.16, 1, 0.3, 1] as const;
+import { EASE_OUT, reveal } from "@/lib/motion";
+
 const WORD_STAGGER = 0.05;
 
 /**
@@ -44,10 +45,12 @@ export function BecauseOfYou({
       />
 
       <div className="relative mx-auto w-full max-w-3xl text-center">
-        <p className="text-[0.9375rem] text-seed-soft">{eyebrow}</p>
+        <motion.p className="text-small text-seed-soft" {...reveal(animated)}>
+          {eyebrow}
+        </motion.p>
 
         <motion.h2
-          className="font-display mt-6 text-[clamp(2rem,6.5vw,4.25rem)] leading-[1.12] font-normal tracking-[-0.015em] text-balance text-seed italic"
+          className="font-display mt-6 text-head-lg font-normal text-balance text-seed italic [--opsz:60]"
           variants={HEADING_STATES}
           initial={animated ? "hidden" : false}
           whileInView="shown"
@@ -71,11 +74,14 @@ export function BecauseOfYou({
           ))}
         </motion.h2>
 
-        <div className="mx-auto mt-10 max-w-[48ch] space-y-5 text-[1.0625rem] leading-[1.7] text-balance text-seed-soft">
+        <motion.div
+          className="mx-auto mt-10 max-w-[46ch] space-y-5 text-body text-balance text-seed-soft"
+          {...reveal(animated, 0.15)}
+        >
           {paragraphs.map((paragraph) => (
             <p key={paragraph}>{paragraph}</p>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

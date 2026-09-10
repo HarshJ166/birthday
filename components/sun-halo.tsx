@@ -22,15 +22,17 @@ type SunHaloProps = {
   /** False leaves the rays perfectly still. */
   animated: boolean;
   className?: string;
+  style?: React.CSSProperties;
 };
 
-export function SunHalo({ animated, className }: SunHaloProps) {
+export function SunHalo({ animated, className, style }: SunHaloProps) {
   return (
     <motion.svg
       viewBox="-110 -110 220 220"
       aria-hidden="true"
       focusable="false"
       className={cn("pointer-events-none", className)}
+      style={style}
       animate={animated ? { rotate: 360 } : undefined}
       transition={{
         duration: ROTATION_SECONDS,
