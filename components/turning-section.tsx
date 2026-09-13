@@ -22,15 +22,11 @@ const TURN_SECONDS = 1.8;
 const TURN_PERSPECTIVE_PX = 900;
 
 type TurningSectionProps = {
-  heading: string;
-  /** The idea, in the serif: the flower's half, then hers. */
+  /** The idea, in the serif: the flower's half, then hers. Doubles as the heading. */
   lead: readonly string[];
-  detail: string;
   /** His note in the margin, in the hand the letter is written in. */
   aside: string;
-  /** The line the closing answers. */
-  setup: string;
-  /** The hero's line, coming back as the section's conclusion. */
+  /** The section's last word. */
   closing: readonly string[];
   /** Pointer position as -1 to 1. The flower turns to meet whoever is reading. */
   tilt: { x: number; y: number };
@@ -38,11 +34,8 @@ type TurningSectionProps = {
 };
 
 export function TurningSection({
-  heading,
   lead,
-  detail,
   aside,
-  setup,
   closing,
   tilt,
   animated,
@@ -90,27 +83,20 @@ export function TurningSection({
       </motion.div>
 
       <motion.div className="text-pretty" {...reveal(animated, 0.12)}>
-        <h2 className="font-display text-head font-normal text-seed [--opsz:48]">
-          {heading}
-        </h2>
-
-        <p className="font-display mt-6 max-w-[30ch] text-lead-lg font-normal text-balance text-seed [--opsz:24]">
+        {/* No separate title: the lead is the section's heading. */}
+        <h2 className="font-display max-w-[30ch] text-lead-lg font-normal text-balance text-seed [--opsz:24]">
           {lead.map((line) => (
             <span key={line} className="block">
               {line}
             </span>
           ))}
-        </p>
+        </h2>
 
-        <p className="mt-6 max-w-[42ch] text-body text-seed-soft">{detail}</p>
-
-        <p className="font-hand mt-5 max-w-[24ch] -rotate-1 pl-6 text-hand-lg text-ember-ink">
+        <p className="font-hand mt-6 max-w-[24ch] -rotate-1 pl-6 text-hand-lg text-ember-ink">
           {aside}
         </p>
 
-        <p className="mt-8 max-w-[42ch] text-body text-seed-soft">{setup}</p>
-
-        <p className="font-display mt-4 text-lead-lg font-normal text-seed italic [--opsz:24]">
+        <p className="font-display mt-8 text-lead-lg font-normal text-seed italic [--opsz:24]">
           {closing.map((line) => (
             <span key={line} className="block">
               {line}

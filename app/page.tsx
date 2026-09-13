@@ -114,11 +114,8 @@ export default function BirthdayPage() {
         />
 
         <TurningSection
-          heading={TURNING.heading}
           lead={TURNING.lead}
-          detail={TURNING.detail}
           aside={TURNING.aside}
-          setup={TURNING.setup}
           closing={TURNING.closing}
           tilt={tilt}
           animated={animated}

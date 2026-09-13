@@ -44,11 +44,6 @@ export const TURNING = {
   ],
   /** The turn from the flowers to her, in his hand. */
   aside: "I think you've been my other sunflower.",
-  body: [
-    "You somehow know when I'm having a good day and when I'm not. You listen to my nonsense, understand my highs and lows, support me when I need it, and give me that reality check when I'm clearly being an idiot.",
-    "You don't always need to have an answer. Sometimes just having you there is enough.",
-    "You're always busy figuring things out for everyone else, so I thought, for once, let someone do something for you.",
-  ],
   closing: ["You keep being there for me.", "This one's just for you."],
 } as const;
 
