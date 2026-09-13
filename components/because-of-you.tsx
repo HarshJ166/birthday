@@ -21,8 +21,6 @@ type BecauseOfYouProps = {
   eyebrow: string;
   heading: string;
   paragraphs: readonly string[];
-  /** The last sentence, given room to land on its own. */
-  coda: string;
   animated: boolean;
 };
 
@@ -30,7 +28,6 @@ export function BecauseOfYou({
   eyebrow,
   heading,
   paragraphs,
-  coda,
   animated,
 }: BecauseOfYouProps) {
   const words = heading.split(" ");
@@ -85,13 +82,6 @@ export function BecauseOfYou({
             <p key={paragraph}>{paragraph}</p>
           ))}
         </motion.div>
-
-        <motion.p
-          className="mx-auto mt-14 max-w-[46ch] text-body text-balance text-seed"
-          {...reveal(animated, 0.3)}
-        >
-          {coda}
-        </motion.p>
       </div>
     </section>
   );

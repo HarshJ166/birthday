@@ -72,8 +72,8 @@
   --text-micro: 0.875rem;
   --text-micro--line-height: 1.5;
 
-  /* Hand — Caveat, whose x-height is small for its em. It has to run about a
-     fifth larger than the sans to read as the same size beside it. */
+  /* Hand — Just Another Hand, a tall, light script that reads small at these
+     sizes next to the sans. Nudge up here if it still looks thin. */
   --text-hand-lg: 1.5rem;
   --text-hand-lg--line-height: 1.35;
   --text-hand: 1.3rem;

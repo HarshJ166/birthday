@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Caveat, Fraunces, Instrument_Sans } from "next/font/google";
+import { Fraunces, Instrument_Sans, Just_Another_Hand } from "next/font/google";
 import "./globals.css";
 
 const displaySerif = Fraunces({
@@ -13,9 +13,10 @@ const displaySerif = Fraunces({
 });
 
 /** The letter is handwritten, so it gets an actual hand. */
-const handwriting = Caveat({
+const handwriting = Just_Another_Hand({
   variable: "--font-hand",
   subsets: ["latin"],
+  weight: "400",
   display: "swap",
 });
 

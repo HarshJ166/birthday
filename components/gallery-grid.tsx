@@ -71,10 +71,62 @@ export function GalleryGrid({
           {heading}
         </h2>
         <p className="mt-4 text-body text-seed-soft">{intro}</p>
-        <p className="font-hand mt-3 text-hand text-ember-ink">{hint}</p>
+        <p className="font-hand mt-3 text-hand text-ember-ink sm:hidden">
+          Swipe through them.
+        </p>
+        <p className="font-hand mt-3 hidden text-hand text-ember-ink sm:block">
+          {hint}
+        </p>
       </motion.header>
 
-      <div className="mt-14 gap-6 sm:columns-2 lg:columns-3">
+      {/* A phone has no room to lay eight prints face down and ask for eight
+          taps — every one of them shows up face up in a strip she can flick
+          through, the way she'd actually flip through prints in her hand.
+          Each card is narrow enough on purpose that the next one visibly
+          peeks in at the edge, and the edge itself fades rather than cuts —
+          the same two cues any native carousel uses to say "there's more"
+          without a scrollbar or an instruction. */}
+      <div
+        className="mt-14 -mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-2 sm:hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        style={{
+          maskImage:
+            "linear-gradient(to right, transparent, black 24px, black calc(100% - 28px), transparent)",
+          WebkitMaskImage:
+            "linear-gradient(to right, transparent, black 24px, black calc(100% - 28px), transparent)",
+        }}
+      >
+        {photos.map((photo, index) => (
+          <motion.button
+            key={photo.src}
+            type="button"
+            onClick={() => onSelectPhoto(index)}
+            className={`w-[68vw] flex-none snap-center text-left ${PRINT_FACE}`}
+            initial={animated ? { opacity: 0, y: 20 } : false}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.4 }}
+            transition={{
+              duration: 0.6,
+              delay: index * 0.05,
+              ease: EASE_OUT,
+            }}
+            whileTap={animated ? { scale: 0.97 } : undefined}
+          >
+            <Image
+              src={photo.src}
+              width={photo.width}
+              height={photo.height}
+              alt={photo.alt}
+              sizes="68vw"
+              className="h-auto w-full"
+            />
+            <span className="mt-3.5 block px-1 text-small text-seed-soft">
+              {photo.caption}
+            </span>
+          </motion.button>
+        ))}
+      </div>
+
+      <div className="mt-14 hidden gap-6 sm:block sm:columns-2 lg:columns-3">
         {photos.map((photo, index) => {
           const angle = PRINT_ANGLES[index % PRINT_ANGLES.length];
           const faceUp = turned.includes(index);

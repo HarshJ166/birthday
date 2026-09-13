@@ -20,33 +20,17 @@ const TILT_DEADBAND = 0.012;
 const clamp = (value: number) => Math.max(-1, Math.min(1, value));
 
 /**
- * iOS will not send orientation events until they have been asked for, and it
- * will only accept the question inside a user gesture — so the envelope tap
- * asks on the page's behalf. Everywhere else this resolves to nothing and the
- * listener below just starts working.
- */
-export async function requestTiltAccess(): Promise<void> {
-  const orientation = window.DeviceOrientationEvent as
-    | (typeof window.DeviceOrientationEvent & {
-        requestPermission?: () => Promise<PermissionState>;
-      })
-    | undefined;
-
-  if (typeof orientation?.requestPermission !== "function") return;
-
-  try {
-    await orientation.requestPermission();
-  } catch {
-    /* Declined, or asked outside a gesture. The page is fine without it. */
-  }
-}
-
-/**
  * Where the light is being asked to go, as -1 to 1 on each axis.
  *
  * A desktop points at it. A phone leans toward it — which is the better version
  * of the idea, since tilting an object toward the light is the thing the whole
  * page is about.
+ *
+ * iOS gates `deviceorientation` behind a permission prompt that only a direct
+ * `requestPermission()` call inside a tap can raise — asking for it on the
+ * envelope's own tap felt like a bait and switch, so it is simply never asked
+ * for. Android needs no such permission, so tilt still works there; iOS keeps
+ * the pointer version only.
  */
 export function usePointerOrigin(enabled: boolean): PointerOrigin {
   const [origin, setOrigin] = useState<PointerOrigin>(CENTRE);

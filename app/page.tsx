@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useReducedMotion } from "motion/react";
 
+import { AmbientSky } from "@/components/ambient-sky";
 import { BecauseOfYou } from "@/components/because-of-you";
 import { Closing } from "@/components/closing";
 import { Envelope } from "@/components/envelope";
@@ -113,69 +114,70 @@ export default function BirthdayPage() {
           animated={animated}
         />
 
-        <TurningSection
-          lead={TURNING.lead}
-          aside={TURNING.aside}
-          closing={TURNING.closing}
-          tilt={tilt}
-          animated={animated}
-        />
+        <AmbientSky animated={animated}>
+          <TurningSection
+            lead={TURNING.lead}
+            aside={TURNING.aside}
+            closing={TURNING.closing}
+            tilt={tilt}
+            animated={animated}
+          />
 
-        <NamesCarousel
-          heading={NAMES.heading}
-          intro={NAMES.intro}
-          entries={NAMES.entries}
-          activeIndex={activeNameIndex}
-          animated={animated}
-        />
+          <NamesCarousel
+            heading={NAMES.heading}
+            intro={NAMES.intro}
+            entries={NAMES.entries}
+            activeIndex={activeNameIndex}
+            animated={animated}
+          />
 
-        <BecauseOfYou
-          eyebrow={BECAUSE_OF_YOU.eyebrow}
-          heading={BECAUSE_OF_YOU.heading}
-          paragraphs={BECAUSE_OF_YOU.paragraphs}
-          coda={BECAUSE_OF_YOU.coda}
-          animated={animated}
-        />
+          <BecauseOfYou
+            eyebrow={BECAUSE_OF_YOU.eyebrow}
+            heading={BECAUSE_OF_YOU.heading}
+            paragraphs={BECAUSE_OF_YOU.paragraphs}
+            animated={animated}
+          />
 
-        <GalleryGrid
-          heading={GALLERY_SECTION.heading}
-          intro={GALLERY_SECTION.intro}
-          hint={GALLERY_SECTION.hint}
-          outro={GALLERY_SECTION.outro}
-          photos={GALLERY}
-          onSelectPhoto={setOpenPhotoIndex}
-          animated={animated}
-        />
+          <GalleryGrid
+            heading={GALLERY_SECTION.heading}
+            intro={GALLERY_SECTION.intro}
+            hint={GALLERY_SECTION.hint}
+            outro={GALLERY_SECTION.outro}
+            photos={GALLERY}
+            onSelectPhoto={setOpenPhotoIndex}
+            animated={animated}
+          />
 
-        <Letter
-          date={LETTER.date}
-          salutation={LETTER.salutation}
-          paragraphs={LETTER.paragraphs}
-          closing={LETTER.closing}
-          farewell={LETTER.farewell}
-          signature={LETTER.signature}
-          unfoldLabel={LETTER.unfold}
-          animated={animated}
-        />
+          <Letter
+            date={LETTER.date}
+            salutation={LETTER.salutation}
+            paragraphs={LETTER.paragraphs}
+            closing={LETTER.closing}
+            farewell={LETTER.farewell}
+            signature={LETTER.signature}
+            unfoldLabel={LETTER.unfold}
+            animated={animated}
+          />
 
-        <WishCandles
-          heading={WISH.heading}
-          note={wishCopy.note}
-          actionLabel={wishCopy.action}
-          granted={WISH.granted}
-          stage={stage}
-          onAdvance={advanceWish}
-          animated={animated}
-        />
+          <WishCandles
+            heading={WISH.heading}
+            note={wishCopy.note}
+            actionLabel={wishCopy.action}
+            granted={WISH.granted}
+            stage={stage}
+            onAdvance={advanceWish}
+            animated={animated}
+          />
 
-        <Closing
-          date={CLOSING.date}
-          signature={CLOSING.signature}
-          onTheDay={CLOSING.onTheDay}
-          untilNext={CLOSING.untilNext}
-          birthday={BIRTHDAY}
-          animated={animated}
-        />
+          <Closing
+            date={CLOSING.date}
+            signature={CLOSING.signature}
+            onTheDay={CLOSING.onTheDay}
+            untilNext={CLOSING.untilNext}
+            birthday={BIRTHDAY}
+            animated={animated}
+          />
+        </AmbientSky>
 
         <PhotoLightbox
           photo={openPhotoIndex === null ? null : GALLERY[openPhotoIndex]}

@@ -44,7 +44,7 @@ export const TURNING = {
   ],
   /** The turn from the flowers to her, in his hand. */
   aside: "I think you've been my other sunflower.",
-  closing: ["You keep being there for me.", "This one's just for you."],
+  closing: ["You keep being there for me."],
 } as const;
 
 /** Six names, six different people doing the calling. */
@@ -68,15 +68,13 @@ export const NAMES = {
 } as const;
 
 export const BECAUSE_OF_YOU = {
-  eyebrow: "The part I have never said properly",
-  heading: "I cleared my engineering because of you.",
+  eyebrow: "About the engineering degree",
+  heading: "This is the part I never say right.",
   paragraphs: [
-    "Not the polite version people say at weddings. The literal one.",
+    "I cleared my engineering because of you. Not the polite version people say at weddings. The literal one.",
     "You explained the same thing four times and never once made me feel slow for needing the fourth.",
     "You gave me your time when you didn't have to.",
   ],
-  /** Set apart, with room around it. */
-  coda: "I don't think I've ever properly thanked you for that.",
 } as const;
 
 export const GALLERY = [
@@ -200,7 +198,9 @@ export const WISH = {
 
 export const CLOSING = {
   date: "13 September 2026",
-  signature: "— Harsh",
+  /* The line the turning section held back — the very last word on the page,
+     not the second signature the letter already gave. */
+  signature: "This one's just for you.",
   /* The one line on the page that has moved every time she comes back. */
   onTheDay: "And it is today. That is the entire point.",
   untilNext: "until the next one.",

@@ -1,6 +1,8 @@
 "use client";
 
+import { useEffect } from "react";
 import { AnimatePresence, motion } from "motion/react";
+import { Mic } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import type { WishStage } from "@/hooks/use-wish";
@@ -93,6 +95,14 @@ const PETAL_SCALE = 1.36;
 const SPARK_COUNT = 14;
 const SPARK_RISE = 120;
 
+const PETAL_FALL_COUNT = 10;
+const PETAL_FALL_DISTANCE = 180;
+
+/* ponytail: a flat average-volume threshold, not real breath detection — it
+   reacts to any sustained loud sound near the mic, blowing included. Good
+   enough for a birthday page; a real breath classifier would be overkill. */
+const BLOW_VOLUME_THRESHOLD = 46;
+
 /** A teardrop flame, drawn sitting on its own wick. */
 const FLAME_PATH =
   "M 0 0 C -3.4 -3.4, -3.6 -8.6, 0 -13 C 3.6 -8.6, 3.4 -3.4, 0 0 Z";
@@ -125,6 +135,59 @@ export function WishCandles({
   const darkened = stage !== "unlit";
   const ink = darkened ? ROOM_INK : PAPER_INK;
   const inkSoft = darkened ? ROOM_INK_SOFT : PAPER_INK_SOFT;
+
+  /* While the candles are lit, an actual breath into the phone blows them
+     out — the button stays underneath the whole time for anyone who declines
+     the microphone, or whose browser has none. */
+  useEffect(() => {
+    if (!animated || stage !== "lit") return;
+
+    let cancelled = false;
+    let frame = 0;
+    let stream: MediaStream | null = null;
+    let context: AudioContext | null = null;
+
+    async function listenForBreath() {
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        if (cancelled) {
+          stream.getTracks().forEach((track) => track.stop());
+          return;
+        }
+
+        context = new AudioContext();
+        const source = context.createMediaStreamSource(stream);
+        const analyser = context.createAnalyser();
+        analyser.fftSize = 512;
+        source.connect(analyser);
+        const levels = new Uint8Array(analyser.frequencyBinCount);
+
+        const tick = () => {
+          analyser.getByteFrequencyData(levels);
+          const volume =
+            levels.reduce((sum, level) => sum + level, 0) / levels.length;
+
+          if (volume > BLOW_VOLUME_THRESHOLD) {
+            onAdvance();
+            return;
+          }
+          frame = requestAnimationFrame(tick);
+        };
+        tick();
+      } catch {
+        /* No microphone, or she said no. The button still works. */
+      }
+    }
+
+    void listenForBreath();
+
+    return () => {
+      cancelled = true;
+      cancelAnimationFrame(frame);
+      stream?.getTracks().forEach((track) => track.stop());
+      void context?.close();
+    };
+  }, [animated, stage, onAdvance]);
 
   return (
     <section className="relative overflow-hidden px-6 py-36 lg:py-44">
@@ -395,6 +458,36 @@ export function WishCandles({
                 />
               ))
             : null}
+
+          {/* Petals off the bloom, falling rather than rising — the wish's
+              own confetti. */}
+          {animated && bloomed
+            ? Array.from({ length: PETAL_FALL_COUNT }, (_, index) => (
+                <motion.span
+                  key={index}
+                  aria-hidden="true"
+                  className="pointer-events-none absolute top-[40%] left-1/2 h-2.5 w-1.5 rounded-full bg-sun-core"
+                  style={{
+                    background:
+                      index % 2
+                        ? "var(--color-sun-core)"
+                        : "var(--color-petal)",
+                  }}
+                  initial={{ opacity: 0, x: 0, y: -20, rotate: 0 }}
+                  animate={{
+                    opacity: [0, 1, 1, 0],
+                    x: (scatterNoise(index + 130) - 0.5) * 220,
+                    y: PETAL_FALL_DISTANCE * (0.7 + scatterNoise(index + 170) * 0.6),
+                    rotate: (scatterNoise(index + 210) - 0.5) * 300,
+                  }}
+                  transition={{
+                    duration: 1.9 + scatterNoise(index + 55),
+                    delay: 0.4 + index * 0.07,
+                    ease: "easeIn",
+                  }}
+                />
+              ))
+            : null}
         </div>
 
         <div
@@ -425,17 +518,30 @@ export function WishCandles({
                 </p>
               </motion.div>
             ) : (
-              <motion.p
+              <motion.div
                 key={note}
                 initial={animated ? { opacity: 0, y: 8 } : false}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.4, ease: EASE_OUT }}
-                className="max-w-[46ch] text-body text-balance whitespace-pre-line"
-                style={{ color: inkSoft, transition: INK_FADE }}
+                className="flex max-w-[46ch] flex-col items-center gap-2"
               >
-                {note}
-              </motion.p>
+                <p
+                  className="text-body text-balance whitespace-pre-line"
+                  style={{ color: inkSoft, transition: INK_FADE }}
+                >
+                  {note}
+                </p>
+                {stage === "lit" ? (
+                  <p
+                    className="flex items-center gap-1.5 text-small"
+                    style={{ color: inkSoft, transition: INK_FADE }}
+                  >
+                    <Mic aria-hidden="true" className="size-3.5" />
+                    Or just blow.
+                  </p>
+                ) : null}
+              </motion.div>
             )}
           </AnimatePresence>
         </div>
