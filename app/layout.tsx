@@ -27,8 +27,7 @@ const bodySans = Instrument_Sans({
 
 export const metadata: Metadata = {
   title: "Devyani — twenty-three",
-  description:
-    "A birthday page for Devyani Rawat, who turns toward the sun and keeps her eyes on the sky.",
+  description: "A birthday page for Devyani Rawat.",
 };
 
 export default function RootLayout({

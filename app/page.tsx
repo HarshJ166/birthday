@@ -109,15 +109,17 @@ export default function BirthdayPage() {
           openingLines={HERO.openingLines}
           dateLabel={HERO.dateLabel}
           ageLabel={HERO.ageLabel}
-          note={HERO.note}
           tilt={tilt}
           animated={animated}
         />
 
         <TurningSection
           heading={TURNING.heading}
-          paragraphs={TURNING.paragraphs}
+          lead={TURNING.lead}
+          detail={TURNING.detail}
           aside={TURNING.aside}
+          setup={TURNING.setup}
+          closing={TURNING.closing}
           tilt={tilt}
           animated={animated}
         />
@@ -134,6 +136,7 @@ export default function BirthdayPage() {
           eyebrow={BECAUSE_OF_YOU.eyebrow}
           heading={BECAUSE_OF_YOU.heading}
           paragraphs={BECAUSE_OF_YOU.paragraphs}
+          coda={BECAUSE_OF_YOU.coda}
           animated={animated}
         />
 
@@ -141,6 +144,7 @@ export default function BirthdayPage() {
           heading={GALLERY_SECTION.heading}
           intro={GALLERY_SECTION.intro}
           hint={GALLERY_SECTION.hint}
+          outro={GALLERY_SECTION.outro}
           photos={GALLERY}
           onSelectPhoto={setOpenPhotoIndex}
           animated={animated}
@@ -168,8 +172,6 @@ export default function BirthdayPage() {
         />
 
         <Closing
-          greeting={CLOSING.greeting}
-          nudge={CLOSING.nudge}
           date={CLOSING.date}
           signature={CLOSING.signature}
           onTheDay={CLOSING.onTheDay}

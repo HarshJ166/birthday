@@ -18,8 +18,6 @@ const AIRCRAFT_PITCH_DEGREES = -9;
 const CONTRAIL_PATH = `M -20 100 C 300 88, 640 44, ${AIRCRAFT_X} ${AIRCRAFT_Y}`;
 
 type ClosingProps = {
-  greeting: string;
-  nudge: string;
   date: string;
   signature: string;
   onTheDay: string;
@@ -29,8 +27,6 @@ type ClosingProps = {
 };
 
 export function Closing({
-  greeting,
-  nudge,
   date,
   signature,
   onTheDay,
@@ -105,27 +101,14 @@ export function Closing({
       </svg>
 
       <div className="relative mx-auto flex w-full max-w-3xl flex-col items-center text-center">
-        <motion.h2
-          className="font-display text-head font-normal text-balance text-seed [--opsz:48]"
-          {...reveal(animated)}
-        >
-          {greeting}
-        </motion.h2>
-        <motion.p
-          className="font-display mt-4 text-lead font-normal text-seed-soft italic [--opsz:20]"
-          {...reveal(animated, 0.1)}
-        >
-          {nudge}
-        </motion.p>
-        <motion.p
-          className="mt-10 text-micro text-seed-soft"
-          {...reveal(animated, 0.2)}
-        >
+        {/* The greeting has already been said, in the dark room above. This is
+            only the sign-off. */}
+        <motion.p className="text-micro text-seed-soft" {...reveal(animated)}>
           {date}
         </motion.p>
         <motion.p
           className="font-display mt-2 text-lead font-normal text-seed italic [--opsz:18]"
-          {...reveal(animated, 0.28)}
+          {...reveal(animated, 0.08)}
         >
           {signature}
         </motion.p>

@@ -19,7 +19,6 @@ const LETTER_STAGGER = 0.055;
 const RULE_DELAY = 1.32;
 const LINES_DELAY = 1.46;
 const META_DELAY = 1.66;
-const NOTE_DELAY = 1.9;
 
 /* How far each layer answers the pointer. Depth is only ever the difference
    between these numbers, so they are set as a series, not tuned one by one.
@@ -108,7 +107,6 @@ type HeroSunProps = {
   openingLines: readonly string[];
   dateLabel: string;
   ageLabel: string;
-  note: { pointer: string; tilt: string };
   /** Pointer position as -1 to 1 on each axis. Everything here leans to it. */
   tilt: { x: number; y: number };
   animated: boolean;
@@ -121,7 +119,6 @@ export function HeroSun({
   openingLines,
   dateLabel,
   ageLabel,
-  note,
   tilt,
   animated,
 }: HeroSunProps) {
@@ -409,7 +406,7 @@ export function HeroSun({
       />
 
       <motion.div
-        className="relative z-10 -mt-[7svh] flex flex-col px-7 pb-28 sm:px-12 lg:absolute lg:inset-y-0 lg:left-[5%] lg:mt-0 lg:w-[64%] lg:justify-center lg:px-0 lg:pb-0 xl:left-[7%]"
+        className="relative z-10 -mt-[7svh] flex flex-col px-7 pb-16 sm:px-12 lg:absolute lg:inset-y-0 lg:left-[5%] lg:mt-0 lg:w-[64%] lg:justify-center lg:px-0 lg:pb-0 xl:left-[7%]"
         style={leaving}
       >
         <h1
@@ -478,18 +475,6 @@ export function HeroSun({
           <span aria-hidden="true" className="h-4 w-px bg-seed/20" />
           <span>{ageLabel}</span>
         </motion.div>
-
-        {/* Said in a hand rather than a typeface, because it is an aside to one
-            person — and because it is the only instruction the page gives.
-            Which instruction depends on what she is holding, so the choice is
-            made by the input device in CSS rather than by guessing at width. */}
-        <motion.p
-          className="font-hand absolute inset-x-7 bottom-7 -rotate-2 text-center text-hand text-ember-ink sm:inset-x-12 lg:static lg:mt-8 lg:max-w-[22ch] lg:text-left lg:text-hand-lg"
-          {...arrive(NOTE_DELAY)}
-        >
-          <span className="hidden pointer-fine:inline">{note.pointer}</span>
-          <span className="hidden pointer-coarse:inline">{note.tilt}</span>
-        </motion.p>
       </motion.div>
     </section>
   );

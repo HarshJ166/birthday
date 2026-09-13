@@ -115,7 +115,7 @@ export function Envelope({
 
             {/* Clear of the seam, so the writing never sits on the split. */}
             <motion.p
-              className="mt-[18svh] max-w-[26ch] text-small text-seed-soft"
+              className="mt-[18svh] max-w-[36ch] text-small text-balance whitespace-pre-line text-seed-soft"
               initial={animated ? { opacity: 0 } : false}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.7, ease: EASE_OUT }}

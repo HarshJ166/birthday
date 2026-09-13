@@ -34,6 +34,8 @@ type GalleryGridProps = {
   heading: string;
   intro: string;
   hint: string;
+  /** A line after the last print, about the two people behind them. */
+  outro: string;
   photos: readonly Photo[];
   onSelectPhoto: (index: number) => void;
   animated: boolean;
@@ -43,6 +45,7 @@ export function GalleryGrid({
   heading,
   intro,
   hint,
+  outro,
   photos,
   onSelectPhoto,
   animated,
@@ -162,6 +165,13 @@ export function GalleryGrid({
           );
         })}
       </div>
+
+      <motion.p
+        className="font-hand mt-4 max-w-[46ch] text-hand text-ember-ink"
+        {...reveal(animated)}
+      >
+        {outro}
+      </motion.p>
     </section>
   );
 }

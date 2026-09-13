@@ -108,7 +108,9 @@ export function Letter({
                 className="font-hand text-[1.35rem] text-seed-soft"
                 style={{ lineHeight: RULE, marginTop: RULE }}
               >
-                {paragraph}
+                {paragraph.split("**").map((part, index) =>
+                  index % 2 ? <strong key={index}>{part}</strong> : part,
+                )}
               </p>
             ))}
 

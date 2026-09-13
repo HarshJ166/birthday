@@ -2,7 +2,7 @@
 export const ENVELOPE = {
   eyebrow: "For you,",
   name: "Devyani",
-  note: "Twenty-three years ago today, and the sun has not missed a morning since.",
+  note: "23 years ago, the world got you.\nSomehow, I got lucky enough to know you.",
   action: "Open it",
 } as const;
 
@@ -12,23 +12,9 @@ export const HERO = {
   openingLines: ["You turn toward the sun.", "So I built you one."],
   dateLabel: "13 September 2003",
   ageLabel: "Twenty-three",
-  /** The page's only instruction, and its only joke. One per input device —
-      the sun follows a cursor on a desktop and a tilted phone in the hand. */
-  note: {
-    pointer: "move your cursor — for once, the sun follows you.",
-    tilt: "tilt your phone — for once, the sun follows you.",
-  },
+
 } as const;
 
-/**
- * Two portraits, because no amount of filtering turns a sunset beach into
- * midnight — and every filter that tries puts her face in the dark along with
- * the sea. After dark the page shows a photograph actually taken after dark,
- * where she is already lit and the background is already black.
- *
- * `object` is where the crop holds as the arch narrows; the pair are the phone
- * and desktop framings, since the arch is a different shape on each.
- */
 export const HERO_PORTRAITS = {
   day: {
     src: "/photos/03.jpeg",
@@ -50,13 +36,20 @@ export const HERO_PORTRAITS = {
   },
 } as const;
 
+/** By day a sunflower faces the sun; on the dark days it faces another one. */
 export const TURNING = {
-  heading: "The turning",
-  paragraphs: [
-    "It follows the sun all day. Turns back east overnight. Faces the morning before the morning arrives.",
-    "I have never had to wonder which way you are facing.",
+  lead: [
+    "In the daylight, a sunflower turns toward the sun.",
+    "On the dark days, it turns toward another sunflower.",
   ],
-  aside: "Heliotropism — to turn toward the light.",
+  /** The turn from the flowers to her, in his hand. */
+  aside: "I think you've been my other sunflower.",
+  body: [
+    "You somehow know when I'm having a good day and when I'm not. You listen to my nonsense, understand my highs and lows, support me when I need it, and give me that reality check when I'm clearly being an idiot.",
+    "You don't always need to have an answer. Sometimes just having you there is enough.",
+    "You're always busy figuring things out for everyone else, so I thought, for once, let someone do something for you.",
+  ],
+  closing: ["You keep being there for me.", "This one's just for you."],
 } as const;
 
 /** Six names, six different people doing the calling. */
@@ -83,9 +76,12 @@ export const BECAUSE_OF_YOU = {
   eyebrow: "The part I have never said properly",
   heading: "I cleared my engineering because of you.",
   paragraphs: [
-    "Not the polite version people say at weddings. The literal one. You explained the same thing four times and never once made me feel slow for needing the fourth.",
-    "There is a version of this where you were busy that year. I don't like the look of it.",
+    "Not the polite version people say at weddings. The literal one.",
+    "You explained the same thing four times and never once made me feel slow for needing the fourth.",
+    "You gave me your time when you didn't have to.",
   ],
+  /** Set apart, with room around it. */
+  coda: "I don't think I've ever properly thanked you for that.",
 } as const;
 
 export const GALLERY = [
@@ -115,7 +111,7 @@ export const GALLERY = [
     width: 1500,
     height: 2000,
     alt: "Devyani at the beach at sunset in a yellow shirt, hand in her hair.",
-    caption: "Sunset, and still the brightest thing on that beach.",
+    caption: "Somehow you still made this about you.",
   },
   {
     src: "/photos/07.jpeg",
@@ -136,7 +132,7 @@ export const GALLERY = [
     width: 900,
     height: 1600,
     alt: "Devyani on a stone staircase beside a white balustrade and flowering vines.",
-    caption: "Somewhere between the stairs and the next plan.",
+    caption: "There was definitely a plan. I just don't remember what it was.",
   },
   {
     src: "/photos/08.jpeg",
@@ -152,31 +148,43 @@ export const GALLERY_SECTION = {
   intro: "Only the ones I could get my hands on.",
   /* They come out of the envelope face down, the way prints actually do. */
   hint: "Face down, as they came. Turn one over.",
+  outro:
+    "There are many stories behind these eight photos. Unfortunately for you, I'm only putting the photos here.",
 } as const;
 
 export const LETTER = {
   date: "13 September 2026",
-  salutation: "Devyani,",
+  salutation: "To Devyani,",
+  /** A pair of double asterisks sets the words between them in bold. */
   paragraphs: [
-    "I have called you my therapist for so long that I think you have stopped hearing it as a compliment. It is the largest one I have got.",
-    "You do this thing — I have watched you do it in rooms full of strangers — where you find the one person who has gone quiet, and you fold them back in. You call yourself a social butterfly like it is a joke about being loud. It is not that. It is that nobody standing anywhere near you has ever felt like an extra.",
-    "You are up and running before the rest of us have argued with the alarm. You will walk for three hours and describe it as getting some air. You will travel further for Punjabi food than most people travel for a holiday, and put a mountain in front of you and you simply start climbing it.",
-    "And the specs. You have complained about them for years. They make you look like the smartest person in the room, which is inconvenient, because you already were.",
+    "Devi… Meri Teacher… Ms. PATAKA MODEL… kya kya kahu tujhe?",
+    "I have called you my therapist for so long that I think you have stopped hearing it as a compliment. It is, though. Probably one of the biggest ones.",
+    "From my first semester to the last, you somehow stayed there through all the ups and downs. And honestly, a lot of those downs were because of my immature behaviour. Still, you always forgave me, supported me, and somehow managed to stay.",
+    "You know me in and out... my anger issues, mood swings, stupid jokes, street-style food choices, what bothers me and what calms me down. You have always given me a reality check when I needed one, supported my decisions when I was right, and properly scolded me when I was wrong.",
+    "And that's something I genuinely value about you. You never just tell me what I want to hear.",
+    "You are also one of those people who makes everyone comfortable. People genuinely enjoy your presence, and you just somehow jell up with everyone.",
+    "You've been my Study Coach, my therapist, my reality check, and someone I know I can trust. You have even cared about my family, and I owe you a lot for that.",
+    "I may not always approach you or talk to you as much as I should, but you still hold a very special place in my heart. You are one of the few people with whom I can go from my shittiest jokes to the most mature conversations without thinking twice.",
+    "You've done a lot for me, Devyani. You brought Purva and Rashi into my life, your life saviours, and somehow they became a part of my life as well. You helped me understand things better and, honestly, helped shape me into a slightly better version of myself.",
+    "And for all the times my behaviour may have hurt you or made things difficult, **I'm genuinely sorry.** I may not have realised it then, but I do now.",
+    "So, thank you. For always being there, for putting up with me, and for being you.",
+    "Here's to 23.",
+    "I hope this year brings you everything you're working for and a lot of things you haven't even planned yet.",
   ],
   closing:
-    "So — twenty-three. You have already sat the exam. Whatever the letter says, keep your eyes up. You have never once needed telling which way the light is.",
-  farewell: "Happy birthday, Dev.",
-  signature: "Harsh",
+    "Stay in touch haan, main call karunga toh ho sake toh plans ko haa bol diya kar ek baar mein. You know me. 😅",
+  farewell: "Happy Birthday, Devi.",
+  signature: "— Harsh",
   /* It arrives folded. Reading it has to be something she chooses to do. */
   unfold: "Unfold it",
 } as const;
 
 export const WISH = {
-  heading: "Make a wish",
+  heading: "Make a wish.",
   /** One line of direction per stage. The button says what happens next. */
   stages: {
     unlit: {
-      note: "Twenty-three of them, set in a sunflower's own spiral.",
+      note: "23 wishes.\nOne for every year you've spent becoming you.",
       action: "Light the candles",
     },
     lit: {
@@ -188,15 +196,14 @@ export const WISH = {
       action: "Light them again",
     },
   },
-  granted: [
-    "Whatever you just asked for — I hope it is already on its way to you.",
-    "And if it isn't, I hope you go and get it anyway. You always do.",
-  ],
+  /** What the dark room says once the candles are out — the page's last word. */
+  granted: {
+    greeting: "Happy birthday, Devyani.",
+    line: "Now go make 23 one of your best yet.",
+  },
 } as const;
 
 export const CLOSING = {
-  greeting: "Happy birthday, Devyani.",
-  nudge: "Go on. Do the smile.",
   date: "13 September 2026",
   signature: "— Harsh",
   /* The one line on the page that has moved every time she comes back. */

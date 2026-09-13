@@ -101,7 +101,7 @@ type WishCandlesProps = {
   heading: string;
   note: string;
   actionLabel: string;
-  granted: readonly string[];
+  granted: { greeting: string; line: string };
   stage: WishStage;
   onAdvance: () => void;
   animated: boolean;
@@ -411,15 +411,18 @@ export function WishCandles({
                 transition={{ duration: 0.6, delay: 0.3, ease: EASE_OUT }}
                 className="space-y-4"
               >
-                {granted.map((line) => (
-                  <p
-                    key={line}
-                    className="font-display mx-auto max-w-[36ch] text-lead font-normal text-balance [--opsz:20]"
-                    style={{ color: ink, transition: INK_FADE }}
-                  >
-                    {line}
-                  </p>
-                ))}
+                <p
+                  className="font-display text-head font-normal text-balance [--opsz:48]"
+                  style={{ color: ink, transition: INK_FADE }}
+                >
+                  {granted.greeting}
+                </p>
+                <p
+                  className="font-display mx-auto max-w-[36ch] text-lead font-normal text-balance italic [--opsz:20]"
+                  style={{ color: inkSoft, transition: INK_FADE }}
+                >
+                  {granted.line}
+                </p>
               </motion.div>
             ) : (
               <motion.p
@@ -428,7 +431,7 @@ export function WishCandles({
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.4, ease: EASE_OUT }}
-                className="max-w-[46ch] text-body text-balance"
+                className="max-w-[46ch] text-body text-balance whitespace-pre-line"
                 style={{ color: inkSoft, transition: INK_FADE }}
               >
                 {note}
